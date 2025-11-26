@@ -1,0 +1,381 @@
+------ Use multi-GPU setting ------
+if you stuck too long time with multi-GPU setting, try to set --workers 0
+Filtering the images containing characters which are not in opt.character
+Filtering the images whose label is longer than opt.batch_max_length
+--------------------------------------------------------------------------------
+dataset_root: data_lmdb/training
+opt.select_data: ['training']
+opt.batch_ratio: ['1.0']
+--------------------------------------------------------------------------------
+dataset_root:    data_lmdb/training	 dataset: training
+sub-directory:	/.	 num samples: 7236
+num total samples of training: 7236 x 1.0 (total_data_usage_ratio) = 7236
+num samples of training per batch: 96 x 1.0 (batch_ratio) = 96
+--------------------------------------------------------------------------------
+Total_batch_size: 96 = 96
+--------------------------------------------------------------------------------
+dataset_root:    data_lmdb/validation	 dataset: /
+sub-directory:	/.	 num samples: 4259
+--------------------------------------------------------------------------------
+model input parameters 32 200 20 1 512 256 38 50 TPS ResNet BiLSTM Attn
+Skip Transformation.LocalizationNetwork.localization_fc2.weight as it is already initialized
+Skip Transformation.LocalizationNetwork.localization_fc2.bias as it is already initialized
+Model:
+DataParallel(
+  (module): Model(
+    (Transformation): TPS_SpatialTransformerNetwork(
+      (LocalizationNetwork): LocalizationNetwork(
+        (conv): Sequential(
+          (0): Conv2d(1, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+          (4): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (5): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (6): ReLU(inplace=True)
+          (7): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+          (8): Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (9): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (10): ReLU(inplace=True)
+          (11): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+          (12): Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (13): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (14): ReLU(inplace=True)
+          (15): AdaptiveAvgPool2d(output_size=1)
+        )
+        (localization_fc1): Sequential(
+          (0): Linear(in_features=512, out_features=256, bias=True)
+          (1): ReLU(inplace=True)
+        )
+        (localization_fc2): Linear(in_features=256, out_features=40, bias=True)
+      )
+      (GridGenerator): GridGenerator()
+    )
+    (FeatureExtraction): ResNet_FeatureExtractor(
+      (ConvNet): ResNet(
+        (conv0_1): Conv2d(1, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn0_1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv0_2): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn0_2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (maxpool1): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+        (layer1): Sequential(
+          (0): BasicBlock(
+            (conv1): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (relu): ReLU(inplace=True)
+            (downsample): Sequential(
+              (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+        )
+        (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (maxpool2): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+        (layer2): Sequential(
+          (0): BasicBlock(
+            (conv1): Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (relu): ReLU(inplace=True)
+            (downsample): Sequential(
+              (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+          (1): BasicBlock(
+            (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (relu): ReLU(inplace=True)
+          )
+        )
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (maxpool3): MaxPool2d(kernel_size=2, stride=(2, 1), padding=(0, 1), dilation=1, ceil_mode=False)
+        (layer3): Sequential(
+          (0): BasicBlock(
+            (conv1): Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (relu): ReLU(inplace=True)
+            (downsample): Sequential(
+              (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+          (1): BasicBlock(
+            (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (relu): ReLU(inplace=True)
+          )
+          (2): BasicBlock(
+            (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (relu): ReLU(inplace=True)
+          )
+          (3): BasicBlock(
+            (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (relu): ReLU(inplace=True)
+          )
+          (4): BasicBlock(
+            (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (relu): ReLU(inplace=True)
+          )
+        )
+        (conv3): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (layer4): Sequential(
+          (0): BasicBlock(
+            (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (relu): ReLU(inplace=True)
+          )
+          (1): BasicBlock(
+            (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (relu): ReLU(inplace=True)
+          )
+          (2): BasicBlock(
+            (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (relu): ReLU(inplace=True)
+          )
+        )
+        (conv4_1): Conv2d(512, 512, kernel_size=(2, 2), stride=(2, 1), padding=(0, 1), bias=False)
+        (bn4_1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv4_2): Conv2d(512, 512, kernel_size=(2, 2), stride=(1, 1), bias=False)
+        (bn4_2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (AdaptiveAvgPool): AdaptiveAvgPool2d(output_size=(None, 1))
+    (SequenceModeling): Sequential(
+      (0): BidirectionalLSTM(
+        (rnn): LSTM(512, 256, batch_first=True, bidirectional=True)
+        (linear): Linear(in_features=512, out_features=256, bias=True)
+      )
+      (1): BidirectionalLSTM(
+        (rnn): LSTM(256, 256, batch_first=True, bidirectional=True)
+        (linear): Linear(in_features=512, out_features=256, bias=True)
+      )
+    )
+    (Prediction): Attention(
+      (attention_cell): AttentionCell(
+        (i2h): Linear(in_features=256, out_features=256, bias=False)
+        (h2h): Linear(in_features=256, out_features=256, bias=True)
+        (score): Linear(in_features=256, out_features=1, bias=False)
+        (rnn): LSTMCell(294, 256)
+      )
+      (generator): Linear(in_features=256, out_features=38, bias=True)
+    )
+  )
+)
+Trainable params num :  49555182
+Optimizer:
+Adadelta (
+Parameter Group 0
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    lr: 1.0
+    maximize: False
+    rho: 0.95
+    weight_decay: 0
+)
+------------ Options -------------
+exp_name: receipt_lines_3epochs
+train_data: data_lmdb/training
+valid_data: data_lmdb/validation
+manualSeed: 1111
+workers: 12
+batch_size: 96
+num_iter: 3000
+valInterval: 300
+saved_model: 
+FT: False
+adam: False
+lr: 1.0
+beta1: 0.9
+rho: 0.95
+eps: 1e-08
+grad_clip: 5
+baiduCTC: False
+select_data: ['training']
+batch_ratio: ['1.0']
+total_data_usage_ratio: 1.0
+batch_max_length: 50
+imgH: 32
+imgW: 200
+rgb: False
+character: 0123456789abcdefghijklmnopqrstuvwxyz
+sensitive: False
+PAD: False
+data_filtering_off: False
+Transformation: TPS
+FeatureExtraction: ResNet
+SequenceModeling: BiLSTM
+Prediction: Attn
+num_fiducial: 20
+input_channel: 1
+output_channel: 512
+hidden_size: 256
+num_gpu: 3
+num_class: 38
+---------------------------------------
+
+[1/3000] Train loss: 3.67173, Valid loss: 3.63329, Elapsed_time: 6.03005
+Current_accuracy : 0.000, Current_norm_ED  : 0.00
+Best_accuracy    : 0.000, Best_norm_ED     : 0.00
+--------------------------------------------------------------------------------
+Ground Truth              | Prediction                | Confidence Score & T/F
+--------------------------------------------------------------------------------
+jamal                     | tuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu | 0.0000	False
+930602                    | tuu11111111u1uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu | 0.0000	False
+amount                    | 8uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu | 0.0000	False
+0                         | kuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu | 0.0000	False
+date                      | 81uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu | 0.0000	False
+--------------------------------------------------------------------------------
+[300/3000] Train loss: 2.14227, Valid loss: 1.41871, Elapsed_time: 210.62239
+Current_accuracy : 52.477, Current_norm_ED  : 0.66
+Best_accuracy    : 52.477, Best_norm_ED     : 0.66
+--------------------------------------------------------------------------------
+Ground Truth              | Prediction                | Confidence Score & T/F
+--------------------------------------------------------------------------------
+5                         | 3                         | 0.3449	False
+cs00044964                | c000nni                   | 0.0000	False
+description               | descriiinn                | 0.0000	False
+cashier01                 | c00000000                 | 0.0000	False
+3                         | 3                         | 0.6814	True
+--------------------------------------------------------------------------------
+[600/3000] Train loss: 0.98151, Valid loss: 0.74417, Elapsed_time: 416.97404
+Current_accuracy : 74.971, Current_norm_ED  : 0.85
+Best_accuracy    : 74.971, Best_norm_ED     : 0.85
+--------------------------------------------------------------------------------
+Ground Truth              | Prediction                | Confidence Score & T/F
+--------------------------------------------------------------------------------
+description               | description               | 0.1836	True
+total                     | total                     | 0.7707	True
+iss                       | iss                       | 0.6217	True
+qty                       | qty                       | 0.7750	True
+rm                        | rm                        | 0.8166	True
+--------------------------------------------------------------------------------
+[900/3000] Train loss: 0.59276, Valid loss: 0.51190, Elapsed_time: 623.73899
+Current_accuracy : 82.085, Current_norm_ED  : 0.90
+Best_accuracy    : 82.085, Best_norm_ED     : 0.90
+--------------------------------------------------------------------------------
+Ground Truth              | Prediction                | Confidence Score & T/F
+--------------------------------------------------------------------------------
+description               | description               | 0.6715	True
+cash                      | cash                      | 0.9830	True
+change                    | cashier                   | 0.2642	False
+000008294692              | 0000000002                | 0.0019	False
+0                         | 0                         | 0.9937	True
+--------------------------------------------------------------------------------
+[1200/3000] Train loss: 0.42302, Valid loss: 0.42221, Elapsed_time: 829.69637
+Current_accuracy : 83.916, Current_norm_ED  : 0.92
+Best_accuracy    : 83.916, Best_norm_ED     : 0.92
+--------------------------------------------------------------------------------
+Ground Truth              | Prediction                | Confidence Score & T/F
+--------------------------------------------------------------------------------
+date                      | date                      | 0.9507	True
+qty                       | qty                       | 0.9674	True
+total                     | total                     | 0.9707	True
+3                         | 3                         | 0.9781	True
+01                        | 01                        | 0.8029	True
+--------------------------------------------------------------------------------
+[1500/3000] Train loss: 0.30256, Valid loss: 0.37929, Elapsed_time: 1036.01429
+Current_accuracy : 84.456, Current_norm_ED  : 0.93
+Best_accuracy    : 84.456, Best_norm_ED     : 0.93
+--------------------------------------------------------------------------------
+Ground Truth              | Prediction                | Confidence Score & T/F
+--------------------------------------------------------------------------------
+301                       | 301                       | 0.8136	True
+1                         | 1                         | 0.9980	True
+1                         | 1                         | 0.9982	True
+2                         | 2                         | 0.9885	True
+price                     | price                     | 0.9012	True
+--------------------------------------------------------------------------------
+[1800/3000] Train loss: 0.22016, Valid loss: 0.47236, Elapsed_time: 1242.52274
+Current_accuracy : 83.165, Current_norm_ED  : 0.93
+Best_accuracy    : 84.456, Best_norm_ED     : 0.93
+--------------------------------------------------------------------------------
+Ground Truth              | Prediction                | Confidence Score & T/F
+--------------------------------------------------------------------------------
+1                         | 1                         | 0.9990	True
+6                         | 6                         | 0.9886	True
+receipt                   | receipt                   | 0.3343	True
+amount                    | amount                    | 0.9659	True
+1                         | 1                         | 0.9989	True
+--------------------------------------------------------------------------------
+[2100/3000] Train loss: 0.16655, Valid loss: 0.24275, Elapsed_time: 1445.17598
+Current_accuracy : 89.645, Current_norm_ED  : 0.96
+Best_accuracy    : 89.645, Best_norm_ED     : 0.96
+--------------------------------------------------------------------------------
+Ground Truth              | Prediction                | Confidence Score & T/F
+--------------------------------------------------------------------------------
+item                      | item                      | 0.9861	True
+description               | description               | 0.9507	True
+iss                       | iss                       | 0.9946	True
+description               | description               | 0.9436	True
+cash                      | cash                      | 0.9983	True
+--------------------------------------------------------------------------------
+[2400/3000] Train loss: 0.12462, Valid loss: 0.23542, Elapsed_time: 1651.90833
+Current_accuracy : 89.528, Current_norm_ED  : 0.96
+Best_accuracy    : 89.645, Best_norm_ED     : 0.96
+--------------------------------------------------------------------------------
+Ground Truth              | Prediction                | Confidence Score & T/F
+--------------------------------------------------------------------------------
+45                        | 45                        | 0.8960	True
+qty                       | qty                       | 0.9949	True
+sr                        | sr                        | 0.9995	True
+3                         | 3                         | 0.9975	True
+date                      | date                      | 0.9943	True
+--------------------------------------------------------------------------------
+[2700/3000] Train loss: 0.09528, Valid loss: 0.22610, Elapsed_time: 1854.33368
+Current_accuracy : 90.326, Current_norm_ED  : 0.96
+Best_accuracy    : 90.326, Best_norm_ED     : 0.96
+--------------------------------------------------------------------------------
+Ground Truth              | Prediction                | Confidence Score & T/F
+--------------------------------------------------------------------------------
+total                     | total                     | 0.9817	True
+2                         | 2                         | 0.9981	True
+6                         | 6                         | 0.9973	True
+8888010995552             | 888801099955              | 0.0304	False
+familymartmy              | familmmaty                | 0.0021	False
+--------------------------------------------------------------------------------
+[3000/3000] Train loss: 0.07430, Valid loss: 0.21280, Elapsed_time: 2061.25093
+Current_accuracy : 90.937, Current_norm_ED  : 0.96
+Best_accuracy    : 90.937, Best_norm_ED     : 0.96
+--------------------------------------------------------------------------------
+Ground Truth              | Prediction                | Confidence Score & T/F
+--------------------------------------------------------------------------------
+qty                       | qty                       | 0.9973	True
+2                         | 2                         | 0.9997	True
+1                         | 1                         | 0.9999	True
+item                      | item                      | 0.7986	True
+6                         | 6                         | 0.9995	True
+--------------------------------------------------------------------------------
+end the training

@@ -1,0 +1,15 @@
+--------------------------------------------------------------------------------
+dataset_root: data_lmdb/training
+opt.select_data: ['training']
+opt.batch_ratio: ['1.0']
+--------------------------------------------------------------------------------
+dataset_root:    data_lmdb/training	 dataset: training
+sub-directory:	/.	 num samples: 7236
+num total samples of training: 7236 x 1.0 (total_data_usage_ratio) = 7236
+num samples of training per batch: 96 x 1.0 (batch_ratio) = 96
+--------------------------------------------------------------------------------
+Total_batch_size: 96 = 96
+--------------------------------------------------------------------------------
+dataset_root:    data_lmdb/validation	 dataset: /
+sub-directory:	/.	 num samples: 4259
+--------------------------------------------------------------------------------

@@ -1,0 +1,40 @@
+------------ Options -------------
+exp_name: receipt_lines_3epochs
+train_data: data_lmdb/training
+valid_data: data_lmdb/validation
+manualSeed: 1111
+workers: 12
+batch_size: 96
+num_iter: 3000
+valInterval: 300
+saved_model: 
+FT: False
+adam: False
+lr: 1.0
+beta1: 0.9
+rho: 0.95
+eps: 1e-08
+grad_clip: 5
+baiduCTC: False
+select_data: ['training']
+batch_ratio: ['1.0']
+total_data_usage_ratio: 1.0
+batch_max_length: 50
+imgH: 32
+imgW: 200
+rgb: False
+character: 0123456789abcdefghijklmnopqrstuvwxyz
+sensitive: False
+PAD: False
+data_filtering_off: False
+Transformation: TPS
+FeatureExtraction: ResNet
+SequenceModeling: BiLSTM
+Prediction: Attn
+num_fiducial: 20
+input_channel: 1
+output_channel: 512
+hidden_size: 256
+num_gpu: 3
+num_class: 38
+---------------------------------------
