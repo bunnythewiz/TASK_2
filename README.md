@@ -84,16 +84,20 @@ CUDA >= 11.1 (for GPU support)
 ### Setup Environment
 
 ## Clone repository
+```
 git clone https://github.com/yourusername/sroie-task2.git
 cd sroie-task2
+```
 
 ## Create virtual environment
+```
 conda create -n sroie_ocr python=3.8 -y
 conda activate sroie_ocr
-
+```
 ## Install dependencies
+```
 pip install -r requirements.txt
-
+```
 ### Requirements
 torch==1.8.1
 torchvision==0.9.1
@@ -112,28 +116,34 @@ nltk==3.6.5
 ### Training
 
 ## Train from scratch
+```
 python train.py --config configs/TPS-ResNet-BiLSTM-Attn.yaml
-
+```
 ## Fine-tune pretrained model
+```
 python train.py --config configs/finetune.yaml --pretrained checkpoints/pretrained_model.pth
-
+```
 ## Train with VAT
+```
 python train.py --config configs/finetune_vat.yaml --vat_epsilon 1.0
-
+```
 ### Inference
 
 ## Single image
+```
 python predict.py --image path/to/receipt.jpg --checkpoint checkpoints/best_model.pth
-
+```
 ## Batch prediction
+```
 python predict.py --image_dir data/test_images/ --checkpoint checkpoints/best_model.pth --output results.txt
-
+```
 ### Evaluation
-
+```
 python evaluate.py --checkpoint checkpoints/best_model.pth --data_dir data/test/ --ground_truth data/test_gt.txt
+```
 
 ## 📁 Project Structure
-
+```
 sroie-task2/
 ├── README.md
 ├── requirements.txt
@@ -156,5 +166,4 @@ sroie-task2/
 ├── train.py
 ├── predict.py
 └── evaluate.py
-
-└── evaluate.py
+```
